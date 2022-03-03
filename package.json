@@ -23,6 +23,7 @@
 		"@types/node": "^17.0.19",
 		"@types/nodemailer": "^6.4.4",
 		"@types/passport": "^1.0.7",
+		"@types/validator": "^13.7.1",
 		"dotenv": "^16.0.0",
 		"morgan": "^1.10.0",
 		"nodemon": "^2.0.15",
@@ -38,7 +39,8 @@
 		"mongoose": "^6.2.3",
 		"nodemailer": "^6.7.2",
 		"passport": "^0.5.2",
-		"ts-node-dev": "^1.1.8"
+		"ts-node-dev": "^1.1.8",
+		"validator": "^13.7.0"
 	},
-	"type": "commonjs"
+	"type": "module"
 }
