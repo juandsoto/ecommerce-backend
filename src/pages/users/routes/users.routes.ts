@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { hashPasswordMiddleware } from "../middlewares/index";
+import { validateForbidden } from "../middlewares";
 import {
   createOne,
   findAll,
@@ -13,8 +13,8 @@ const router = Router();
 router
   .get("/", findAll)
   .get("/:id", findOneById)
-  .post("/", hashPasswordMiddleware, createOne)
-  .patch("/:id", hashPasswordMiddleware, updateOneById)
+  .post("/", validateForbidden, createOne)
+  .patch("/:id", validateForbidden, updateOneById)
   .delete("/:id", deleteOneById);
 
 export default router;

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../schema/User.schema";
 import { badRequest } from "../../../utils/errors/badRequest";
 import { IUser } from "../interfaces/user.interface";
+import { genSaltSync, hashSync } from "bcrypt";
 
 export async function findAll(req: Request, res: Response): Promise<Response> {
   try {
@@ -15,8 +16,8 @@ export async function findAll(req: Request, res: Response): Promise<Response> {
 export async function findOneById(req: Request, res: Response): Promise<Response> {
   const { id } = req.params;
   try {
-    const user = await User.findById<IUser>(id);
-    return res.status(200).json(user);
+    const userDB = await User.findById<IUser>(id);
+    return res.status(200).json(userDB);
   } catch (error: any) {
     res.json({
       error: error.name,
@@ -36,16 +37,17 @@ export async function createOne(req: Request, res: Response): Promise<Response> 
 }
 
 export async function updateOneById(req: Request, res: Response): Promise<Response> {
-  const { email, is_admin, ...user } = req.body;
+  const user = req.body;
   const { id } = req.params;
+  if (user.password) {
+    const salt = genSaltSync();
+    user.password = hashSync(user.password, salt);
+  }
   try {
-    const updated = await User.findByIdAndUpdate<IUser>(id, user, { new: true });
-    return res.status(200).json(updated);
+    const userDB = await User.findByIdAndUpdate<IUser>(id, user, { new: true, runValidators: true });
+    return res.status(200).json(userDB);
   } catch (error: any) {
-    res.json({
-      error: error.name,
-      message: error.message,
-    });
+    return badRequest(res, error);
   }
 }
 
@@ -53,8 +55,8 @@ export async function deleteOneById(req: Request, res: Response): Promise<Respon
   const { id } = req.params;
 
   try {
-    const deleted = await User.findByIdAndDelete<IUser>(id);
-    return res.json(deleted);
+    const userDB = await User.findByIdAndDelete<IUser>(id);
+    return res.json(userDB);
   } catch (error: any) {
     res.json({
       error: error.name,

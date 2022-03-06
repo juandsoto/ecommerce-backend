@@ -1,8 +1,19 @@
 import { Router } from "express";
-import { createOne, findAll, findOneById } from "../controller/products.controller";
+import {
+  createOne,
+  deleteOneById,
+  findAll,
+  findOneById,
+  updateOneById,
+} from "../controller/products.controller";
 
 const router = Router();
 
-router.get("/", findAll).get("/:id", findOneById).post("/", createOne);
+router
+  .get("/", findAll)
+  .get("/:id", findOneById)
+  .post("/", createOne)
+  .patch("/:id", updateOneById)
+  .delete("/:id", deleteOneById);
 
 export default router;
