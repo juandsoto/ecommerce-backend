@@ -3,6 +3,6 @@ import { createOne, findAll, findOneById } from "../controller/products.controll
 
 const router = Router();
 
-router.get("/products", findAll).get("/products/:id", findOneById).post("/products", createOne);
+router.get("/", findAll).get("/:id", findOneById).post("/", createOne);
 
 export default router;

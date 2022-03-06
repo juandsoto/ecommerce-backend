@@ -4,8 +4,8 @@ import productRouter from "./products/routes/products.routes";
 import categoryRouter from "./categories/routes/categories.routes";
 const router = Router();
 
-router.use(userRouter);
-router.use(productRouter);
-router.use(categoryRouter);
+router.use("/users", userRouter);
+router.use("/products", productRouter);
+router.use("/categories", categoryRouter);
 
 export default router;

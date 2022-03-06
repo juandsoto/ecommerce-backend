@@ -11,10 +11,10 @@ import {
 const router = Router();
 
 router
-  .get("/users", findAll)
-  .get("/users/:id", findOneById)
-  .post("/users", hashPasswordMiddleware, createOne)
-  .patch("/users/:id", hashPasswordMiddleware, updateOneById)
-  .delete("/users/:id", deleteOneById);
+  .get("/", findAll)
+  .get("/:id", findOneById)
+  .post("/", hashPasswordMiddleware, createOne)
+  .patch("/:id", hashPasswordMiddleware, updateOneById)
+  .delete("/:id", deleteOneById);
 
 export default router;
