@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { genSaltSync, hashSync } from "bcrypt";
 import { Schema, model } from "mongoose";
 import validator from "validator";
 
@@ -77,6 +77,19 @@ const UserSchema = new Schema(
     versionKey: false,
   }
 );
+
+UserSchema.pre("save", function (next: (err?: any) => void) {
+  if (this.password) {
+    try {
+      const salt = genSaltSync();
+      this.password = hashSync(this.password, salt);
+    } catch (error: any) {
+      next(error);
+      return;
+    }
+  }
+  next();
+});
 
 UserSchema.methods.toJSON = function () {
   const { password, ...user } = this.toObject();

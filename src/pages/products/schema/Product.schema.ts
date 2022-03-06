@@ -28,11 +28,13 @@ const ProductSchema = new Schema(
         required: [true, "images is a required field"],
       },
     ],
-    category: {
-      type: Schema.Types.ObjectId,
-      ref: "Categories",
-      required: [true, "category is a required field"],
-    },
+    categories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Categories",
+        required: [true, "category is a required field"],
+      },
+    ],
     stock: {
       type: Number,
       required: [true, "stock is a required field"],

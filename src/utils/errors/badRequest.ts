@@ -20,6 +20,9 @@ export function badRequest(res: Response, error: any) {
 
     return res.status(400).json({ error: errors });
   }
+  if (error.name === "Forbidden payload") {
+    return res.status(403).json({ error: error.errors });
+  }
   return res.status(400).json({
     error: error.message,
   });
