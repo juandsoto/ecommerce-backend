@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { badRequest } from "../../../utils/errors/badRequest";
+import { errorHandler } from "../../../utils/errors";
 
 export function validateForbidden(req: Request, res: Response, next: NextFunction) {
   const { email, is_admin } = req.body;
@@ -15,7 +15,7 @@ export function validateForbidden(req: Request, res: Response, next: NextFunctio
   }
 
   if (Object.keys(errors).length !== 0) {
-    badRequest(res, {
+    errorHandler(res, {
       name: "Forbidden payload",
       errors,
     });

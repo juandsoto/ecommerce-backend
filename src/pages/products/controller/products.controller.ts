@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Product from "../schema/Product.schema";
 import { IProduct } from "../interfaces/product.interface";
-import { badRequest } from "../../../utils/errors/badRequest";
+import { errorHandler } from "../../../utils/errors";
 import { NotFoundException } from "../../../utils/errors/NotFoundException";
 
 interface Query {
@@ -21,10 +21,7 @@ export async function findAll(req: Request, res: Response): Promise<Response> {
       .sort({ [field]: order });
     return res.json(products);
   } catch (error: any) {
-    return res.json({
-      error: error.name,
-      message: error.message,
-    });
+    return errorHandler(res, error);
   }
 }
 
@@ -39,10 +36,7 @@ export async function findOneById(req: Request, res: Response): Promise<Response
     }
     return res.json(productDB);
   } catch (error: any) {
-    return res.json({
-      error: error.name,
-      message: error.message,
-    });
+    return errorHandler(res, error);
   }
 }
 
@@ -53,7 +47,7 @@ export async function createOne(req: Request, res: Response): Promise<Response> 
     const productDB = await Product.create<IProduct>(req.body);
     return res.status(201).json(productDB);
   } catch (error: any) {
-    badRequest(res, error);
+    return errorHandler(res, error);
   }
 }
 
@@ -70,7 +64,7 @@ export async function updateOneById(req: Request, res: Response): Promise<Respon
     }
     return res.json(productDB);
   } catch (error: any) {
-    badRequest(res, error);
+    return errorHandler(res, error);
   }
 }
 export async function deleteOneById(req: Request, res: Response): Promise<Response> {
@@ -82,6 +76,6 @@ export async function deleteOneById(req: Request, res: Response): Promise<Respon
     }
     return res.json(productDB);
   } catch (error: any) {
-    badRequest(res, error);
+    return errorHandler(res, error);
   }
 }

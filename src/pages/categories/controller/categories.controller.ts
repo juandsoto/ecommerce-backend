@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Category } from "../schema/Category.schema";
-import { badRequest } from "../../../utils/errors/badRequest";
+import { errorHandler } from "../../../utils/errors";
 import { ICategory } from "../interfaces/category.interface";
 import { NotFoundException } from "../../../utils/errors/NotFoundException";
 
@@ -9,10 +9,7 @@ export async function findAll(req: Request, res: Response): Promise<Response> {
     const categories = await Category.find<ICategory[]>();
     return res.json(categories);
   } catch (error: any) {
-    return res.json({
-      error: error.name,
-      message: error.message,
-    });
+    return errorHandler(res, error);
   }
 }
 
@@ -25,10 +22,7 @@ export async function findOneById(req: Request, res: Response): Promise<Response
     }
     return res.json(categoryDB);
   } catch (error: any) {
-    return res.json({
-      error: error.name,
-      message: error.message,
-    });
+    return errorHandler(res, error);
   }
 }
 
@@ -37,7 +31,7 @@ export async function createOne(req: Request, res: Response): Promise<Response> 
     const categoryDB = await Category.create<ICategory>(req.body);
     return res.status(201).json(categoryDB);
   } catch (error: any) {
-    return badRequest(res, error);
+    return errorHandler(res, error);
   }
 }
 
@@ -54,7 +48,7 @@ export async function updateOneById(req: Request, res: Response): Promise<Respon
     }
     return res.json(categoryDB);
   } catch (error: any) {
-    badRequest(res, error);
+    return errorHandler(res, error);
   }
 }
 
@@ -67,6 +61,6 @@ export async function deleteOneById(req: Request, res: Response): Promise<Respon
     }
     return res.json(categoryDB);
   } catch (error: any) {
-    badRequest(res, error);
+    return errorHandler(res, error);
   }
 }
