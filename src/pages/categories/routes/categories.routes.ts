@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { isAdmin } from "../../../middlewares/isAdmin.middleware";
 import {
   findAll,
   createOne,
@@ -12,8 +13,8 @@ const router = Router();
 router
   .get("/", findAll)
   .get("/:id", findOneById)
-  .post("/", createOne)
-  .patch("/:id", updateOneById)
-  .delete("/:id", deleteOneById);
+  .post("/", isAdmin, createOne)
+  .patch("/:id", isAdmin, updateOneById)
+  .delete("/:id", isAdmin, deleteOneById);
 
 export default router;

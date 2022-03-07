@@ -19,8 +19,9 @@ export function errorHandler(res: Response, error: any) {
       return res.status(403).json({ error: error.errors });
 
     default:
-      return res.status(400).json({
-        error: error.message,
+      return res.status(401).json({
+        error: error.error,
+        message: error.message,
       });
   }
 }

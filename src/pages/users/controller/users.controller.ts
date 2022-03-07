@@ -8,7 +8,7 @@ export async function findAll(req: Request, res: Response): Promise<Response> {
   try {
     const users = await User.find<IUser[]>();
     return res.json(users);
-  } catch (error) {
+  } catch (error: any) {
     return errorHandler(res, error);
   }
 }

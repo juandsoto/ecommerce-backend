@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { validateForbidden } from "../middlewares";
+import { isAdmin } from "../../../middlewares/isAdmin.middleware";
+import { isAuthorized } from "../../../middlewares/isAuthorized.middleware";
 import {
   createOne,
   findAll,
@@ -11,10 +13,10 @@ import {
 const router = Router();
 
 router
-  .get("/", findAll)
-  .get("/:id", findOneById)
+  .get("/", isAdmin, findAll)
+  .get("/:id", isAuthorized, findOneById)
   .post("/", validateForbidden, createOne)
-  .patch("/:id", validateForbidden, updateOneById)
-  .delete("/:id", deleteOneById);
+  .patch("/:id", [isAuthorized, validateForbidden], updateOneById)
+  .delete("/:id", isAuthorized, deleteOneById);
 
 export default router;

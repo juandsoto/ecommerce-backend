@@ -1,4 +1,5 @@
 export interface IUser {
+  _id: string;
   email: string;
   password: string;
   first_name: string;
@@ -8,4 +9,6 @@ export interface IUser {
   shipping_address: string;
   country: string;
   phone: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
