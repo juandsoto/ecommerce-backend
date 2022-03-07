@@ -4,9 +4,20 @@ import { errorHandler } from "../../../utils/errors";
 import { ICategory } from "../interfaces/category.interface";
 import { NotFoundException } from "../../../utils/errors/NotFoundException";
 
+interface Query {
+  skip: string;
+  limit: string;
+  sort: string;
+}
+
 export async function findAll(req: Request, res: Response): Promise<Response> {
+  const { skip = "0", limit = "3", sort = "createdAt,asc" }: Partial<Query> = req.query;
+  const [field, order] = sort.split(",");
   try {
-    const categories = await Category.find<ICategory[]>();
+    const categories = await Category.find<ICategory[]>()
+      .skip(Number(skip))
+      .limit(Number(limit))
+      .sort({ [field]: order });
     return res.json(categories);
   } catch (error: any) {
     return errorHandler(res, error);

@@ -4,9 +4,20 @@ import { errorHandler } from "../../../utils/errors";
 import { IUser } from "../interfaces/user.interface";
 import { genSaltSync, hashSync } from "bcrypt";
 
+interface Query {
+  skip: string;
+  limit: string;
+  sort: string;
+}
+
 export async function findAll(req: Request, res: Response): Promise<Response> {
+  const { skip = "0", limit = "3", sort = "createdAt,asc" }: Partial<Query> = req.query;
+  const [field, order] = sort.split(",");
   try {
-    const users = await User.find<IUser[]>();
+    const users = await User.find<IUser[]>()
+      .skip(Number(skip))
+      .limit(Number(limit))
+      .sort({ [field]: order });
     return res.json(users);
   } catch (error: any) {
     return errorHandler(res, error);
