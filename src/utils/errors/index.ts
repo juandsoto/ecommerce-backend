@@ -20,7 +20,7 @@ export function errorHandler(res: Response, error: any) {
 
     default:
       return res.status(401).json({
-        error: error.error,
+        error: error.name,
         message: error.message,
       });
   }

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import orderRoutes from "../orders/routes/orders.routes";
 import { validateForbidden } from "../middlewares";
 import { isAdmin } from "../../../middlewares/isAdmin.middleware";
 import { isAuthorized } from "../../../middlewares/isAuthorized.middleware";
@@ -11,6 +12,8 @@ import {
 } from "../controller/users.controller";
 
 const router = Router();
+
+router.use("/", orderRoutes);
 
 router
   .get("/", isAdmin, findAll)

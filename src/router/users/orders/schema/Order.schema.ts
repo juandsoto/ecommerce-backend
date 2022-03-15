@@ -5,39 +5,42 @@ const OrderSchema = new Schema(
     user_id: {
       type: Schema.Types.ObjectId,
       ref: "Users",
-      required: true,
+      required: [true, "user_id is a required field"],
     },
     products: [
       {
         product_id: {
           type: Schema.Types.ObjectId,
           ref: "Products",
-          required: true,
+          required: [true, "product_id is a required field"],
         },
-        qty: { type: Number, required: true, default: 1 },
+        qty: { type: Number, default: 1 },
+        discount: { type: Number, default: 0 },
+        total_price: { type: Number },
       },
     ],
-    ammount: {
+    qty: {
       type: Number,
-      required: true,
+    },
+    total_price: {
+      type: Number,
     },
     shipping_address: {
       type: String,
-      required: true,
     },
     order_address: {
       type: String,
-      required: true,
     },
     order_email: {
       type: String,
-      required: true,
     },
     status: {
       type: String,
-      enum: ["pending", "on the way", "delivered", "cancelled"],
+      enum: {
+        values: ["pending", "on the way", "delivered", "cancelled"],
+        message: "invalid status, try one of pending - on the way - delivered - cancelled",
+      },
       default: "pending",
-      required: true,
     },
   },
   {

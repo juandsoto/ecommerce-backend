@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { User } from "../pages/users/schema/User.schema";
+import { User } from "../router/users/schema/User.schema";
+import { errorHandler } from "../utils/errors/index";
 
 export async function checkJWT(req: Request, res: Response, next: NextFunction) {
   const authorization = req.headers.authorization;
 
   if (!authorization) {
     return res.status(401).json({
-      error: "AuthenticationError",
+      name: "AuthenticationError",
       message: "Send the token",
     });
   }
@@ -16,7 +17,7 @@ export async function checkJWT(req: Request, res: Response, next: NextFunction) 
 
   if (!token) {
     return res.status(401).json({
-      error: "AuthenticationError",
+      name: "AuthenticationError",
       message: "Send the token",
     });
   }
@@ -25,7 +26,7 @@ export async function checkJWT(req: Request, res: Response, next: NextFunction) 
     const userDB = await User.findById(id);
     if (!userDB) {
       return res.status(401).json({
-        error: "AuthenticationError",
+        name: "AuthenticationError",
         message: "invalid token - user not found",
       });
     }
@@ -34,7 +35,6 @@ export async function checkJWT(req: Request, res: Response, next: NextFunction) 
     req.user = user;
     return next();
   } catch (error: any) {
-    console.log({ error });
-    return next(error);
+    return errorHandler(res, error);
   }
 }

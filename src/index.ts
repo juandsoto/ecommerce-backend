@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import config from "./config";
 import "./db/connection";
-import routes from "./pages";
+import routes from "./router";
 
 const app = express();
 

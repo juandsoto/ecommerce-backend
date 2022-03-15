@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { errorHandler } from "../../../utils/errors";
-import { compareSync, genSaltSync, hashSync } from "bcrypt";
+import { compareSync } from "bcrypt";
 import { createOne } from "../../users/controller/users.controller";
 import { User } from "../../users/schema/User.schema";
 import { NotFoundException } from "../../../utils/errors/NotFoundException";
-import { IUser } from "../../users/interfaces/user.interface";
 import { InvalidCredentialsException } from "../../../utils/errors/InvalidCredentialsException";
 import { generateJWT } from "../../../utils/jwt/generateJWT";
 
@@ -18,7 +17,7 @@ export async function register(req: Request, res: Response): Promise<Response> {
 }
 
 export async function login(req: Request, res: Response): Promise<Response> {
-  const { email, password: pass } = req.body;
+  const { email, password: pass } = req.body as Login;
   try {
     const userDB = await User.findOne({ email });
     if (!userDB) {
